@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     } else {
         return res.status(400).json({
             success: false,
+            errorId: "TOKEN_NOT_FOUND",
             error: "Token header not found! Please mention in Authorization header with format: 'bearer {TOKEN_HERE}'"
         });
     }

@@ -10,11 +10,13 @@ module.exports = async (req, res, next) => {
                 if (isTokenExpired(req.token) == true) {
                     res.status(401).json({
                         success: false,
+                        errorId: "TOKEN_EXPIRED",
                         error: "Token Expired! Please renew your token in \"/auth/refresh!\""
                     })
                 } else {
                     res.status(401).json({
                         success: false,
+                        errorId: "UNKNOWN_ERROR_OCCURED",
                         error: "Unknown error has occured!"
                     })
                 }

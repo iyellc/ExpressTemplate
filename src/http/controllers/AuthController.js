@@ -10,11 +10,17 @@ module.exports.login = asyncHandler(async (req, res) => {
     if (typeof req.body.username === "undefined" || typeof req.body.password === "undefined") {
         return res.status(400).json({
             success: false,
-            message: "Fields Not Provided"
+            errorId: "FIELDS_NOT_PROVIDED",
+            error: "Fields Not Provided"
         })
     } else {
         if (typeof JOIUserSchema.validate({ username: req.body.username, password: req.body.password }).error !== "undefined") {
-            return res.json(JOIUserSchema.validate({ username: req.body.username, password: req.body.password }));
+            return res.json({
+                success: false,
+                errorId: "INVALID_REQUEST",
+                error: "The request is not valid!",
+                validation: JOIUserSchema.validate({ username: req.body.username, password: req.body.password })
+            });
         }
 
         let userData = {
@@ -48,6 +54,7 @@ module.exports.login = asyncHandler(async (req, res) => {
         } else {
             return res.json({
                 success: false,
+                errorId: "INVALID_CREDENTIALS",
                 error: "Invalid credentials",
             });
         }
@@ -58,23 +65,30 @@ module.exports.register = asyncHandler(async (req, res) => {
     if (typeof req.body.username === "undefined" || typeof req.body.password === "undefined") {
         return res.status(400).json({
             success: false,
+            errorId: "FIELDS_NOT_PROVIDED",
             error: "Fields Not Provided"
         })
     } else {
         if (typeof JOIUserSchema.validate({ username: req.body.username, password: req.body.password }).error !== "undefined") {
-            return res.json(JOIUserSchema.validate({ username: req.body.username, password: req.body.password }));
+            return res.json({
+                success: false,
+                errorId: "INVALID_REQUEST",
+                error: "The request is not valid!",
+                validation: JOIUserSchema.validate({ username: req.body.username, password: req.body.password })
+            });
         }
 
         let userData = {
             username: req.body.username,
             password: req.body.password,
             clientSecret: req.body.password + req.body.username, // TODO: Add RSG
-            roleName: "user"
+            roleName: "userRole"
         }
 
         if (await User.exists({ username: userData.username }) != null) {
             return res.status(400).json({
                 success: false,
+                errorId: "RECORD_ALREADY_EXISTS",
                 error: "Username already exists!",
             });
         }
@@ -104,6 +118,7 @@ module.exports.register = asyncHandler(async (req, res) => {
         } catch (err) {
             return res.status(500).json({
                 success: false,
+                errorId: "INTERNAL_SERVER_ERROR",
                 error: "Internal Server Error, Please contact the application owner. "
             })
         }
@@ -114,7 +129,8 @@ module.exports.refreshToken = asyncHandler(async (req, res) => {
     if (typeof req.body.refreshToken === "undefined" || typeof req.body.username === "undefined") {
         return res.status(400).json({
             success: false,
-            message: "Fields Not Provided"
+            errorId: "FIELDS_NOT_PROVIDED",
+            error: "Fields Not Provided"
         })
     } else {
         let refreshTokenRecord = await RefreshToken.findOne({ refreshToken: req.body.refreshToken });
@@ -140,9 +156,10 @@ module.exports.refreshToken = asyncHandler(async (req, res) => {
                 })
             }
         } else {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
-                message: "Token Not Found!"
+                errorId: "RECORD_NOT_FOUND",
+                error: "Token Not Found!"
             })
         }
     }

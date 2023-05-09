@@ -13,7 +13,7 @@ router.post("/auth/login", AuthController.login)
 router.post("/auth/register", AuthController.register);
 router.post("/auth/refresh", AuthController.refreshToken);
 
-router.get("/protected", isInRole("admin"), (req, res) => {
+router.get("/protected", isInRole("read", "User"), (req, res) => {
     res.json({
         success: true,
         message: "\"Hello\" said protected route.",

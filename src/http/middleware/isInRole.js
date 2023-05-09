@@ -2,23 +2,31 @@
 
 const isAuthenticated = require("./isAuthenticated")
 
-const roles = ["admin", "user"] // Index gets smaller as the priority
+const adminRole = require("../roles/adminRole")
+const userRole = require("../roles/userRole")
 
-module.exports = (roleName) => {
+const roles = {
+    adminRole: adminRole,
+    userRole: userRole
+}
+
+module.exports = (roleDescription, model) => {
     return (req, res, next) => {
-        isAuthenticated(req, res, () => { 
-            if(roles.includes(roleName)){
-                if (roles.findIndex((key) => key == req.user.roleName) <= roles.findIndex((key) => key == roleName )){
-                   next()
-                }else{
+        isAuthenticated(req, res, () => {
+            try {
+                if (roles[req.user.roleName].can(roleDescription, model)) {
+                    next();
+                } else {
                     return res.status(403).json({
                         success: false,
+                        errorId: "ACCESS_FORBIDDEN",
                         error: "You are not allowed to view this resource!"
                     })
                 }
-            }else{
+            } catch (e) {
                 return res.status(501).json({
                     success: false,
+                    errorId: "INTERNAL_SERVER_ERROR",
                     error: "Internal Server Error!"
                 })
             }
