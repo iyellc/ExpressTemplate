@@ -1,6 +1,6 @@
 
 # Express JS Template
-https://img.shields.io/github/languages/code-size/iyellc/expresstemplate?style=flat-square
+<img src="https://img.shields.io/github/languages/code-size/iyellc/expresstemplate?style=flat-square">
 
 This project is for generating express.js apps with pre-configured controllers, mongodb (mongoose), validation and authorization.
 
