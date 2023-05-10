@@ -1,4 +1,4 @@
-# ## Express JS Template
+# Express JS Template
 
 This project is for generating express.js apps with pre-configured controllers, mongodb (mongoose), validation and authorization.
 
