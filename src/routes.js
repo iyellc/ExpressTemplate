@@ -6,14 +6,14 @@ const AuthController = require("./http/controllers/AuthController");
 
 // Middlewares:
 
-const isInRole = require("./http/middleware/isInRole");
+const hasPermission = require("./http/middleware/hasPermission");
 
 // Auth Routes:
 router.post("/auth/login", AuthController.login)
 router.post("/auth/register", AuthController.register);
 router.post("/auth/refresh", AuthController.refreshToken);
 
-router.get("/protected", isInRole("read", "User"), (req, res) => {
+router.get("/protected", hasPermission("read", "User"), (req, res) => {
     res.json({
         success: true,
         message: "\"Hello\" said protected route.",
