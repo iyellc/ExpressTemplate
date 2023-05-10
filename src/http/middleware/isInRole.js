@@ -5,10 +5,7 @@ const isAuthenticated = require("./isAuthenticated")
 const adminRole = require("../roles/adminRole")
 const userRole = require("../roles/userRole")
 
-const roles = {
-    adminRole: adminRole,
-    userRole: userRole
-}
+const roles = require("../roles")
 
 module.exports = (roleDescription, model) => {
     return (req, res, next) => {
