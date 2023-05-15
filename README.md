@@ -67,7 +67,7 @@ router.get("/countries/list", /* middlewares */, CountryController.listCountries
 module.exports  = router;
 ```
 
-You can also create routes for methods:
+You can also create routes for methods: <br />
 <img src="https://raw.githubusercontent.com/iyellc/.github/main/profile/httpmethods.png" height="250px">
 
 #### Middlewares
