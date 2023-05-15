@@ -59,7 +59,7 @@ router.post("/auth/login", AuthController.login)
 router.post("/auth/register", AuthController.register);
 router.post("/auth/refresh", AuthController.refreshToken);
 
-router.get("/protected", isInRole("read", "User"), (req, res)  => {/*...*/})
+router.get("/protected", hasPermission("read", "User"), (req, res)  => {/*...*/})
 
 // Adding a route down below:
 router.get("/countries/list", /* middlewares */, CountryController.listCountries)
