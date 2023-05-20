@@ -124,7 +124,7 @@ module.exports = {
 This registering allows us to use custom middlewares in the app.
 #### Mongoose Models
 
-[Mongoose](https://mongoosejs.com/) is the main database in Express Template, you can check their docs for mor detailed usage.
+[Mongoose](https://mongoosejs.com/) is the main database in Express Template, you can check their docs for more detailed usage.
 
 ##### Creating a model
 To create a model first import the required packages on top of the file:
@@ -158,7 +158,7 @@ module.exports = mongoose.model("Example", ExampleSchema)
 And we are done!
 
 ##### Using authorization with mongoose
-We can use our authorization package: `@casl/ability` with mongoose. In this example, we are going to securly get our data using `casl`. For post, put, delete; we recommend that you use a middleware. But for `get` requests, there shouldn't be multiple endpoints for multiple roles, so we implement the bare minimum requirement in the middleware and build on top of it.
+We can use our authorization package: `@casl/ability` with mongoose. In this example, we are going to securely get our data using `casl`. For post, put, delete; we recommend that you use a middleware. But for `get` requests, there shouldn't be multiple endpoints for multiple roles, so we implement the bare minimum requirement in the middleware and build on top of it.
 
 Example: Listing data according to `@casl/ability` roles:
 ```js
