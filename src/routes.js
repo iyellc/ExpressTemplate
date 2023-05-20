@@ -7,10 +7,11 @@ const AuthController = require("./http/controllers/AuthController");
 // Middlewares:
 
 const hasPermission = require("./http/middleware/hasPermission");
+const validateBody = require("./http/middleware/validateBody");
 
 // Auth Routes:
-router.post("/auth/login", AuthController.login)
-router.post("/auth/register", AuthController.register);
+router.post("/auth/login", validateBody("userSchema"), AuthController.login)
+router.post("/auth/register", validateBody("userSchema"), AuthController.register);
 router.post("/auth/refresh", AuthController.refreshToken);
 
 router.get("/protected", hasPermission("read", "User"), (req, res) => {

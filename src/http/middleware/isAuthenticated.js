@@ -1,7 +1,24 @@
 const jwt = require('jsonwebtoken');
-const ensureToken = require('./ensureToken');
 const isTokenExpired = require('../../logic/isTokenExpired');
 require('dotenv').config();
+
+const ensureToken = (req, res, next) => {
+    let bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== 'undefined') {
+        let bearer = bearerHeader.split(" ");
+        let bearerToken = bearer[1];
+        req.token = bearerToken;
+
+        next();
+    } else {
+        return res.status(400).json({
+            success: false,
+            errorId: "TOKEN_NOT_FOUND",
+            error: "Token header not found! Please mention in Authorization header with format: 'bearer {TOKEN_HERE}'"
+        });
+    }
+
+}
 
 module.exports = async (req, res, next) => {
     ensureToken(req, res, async () => {

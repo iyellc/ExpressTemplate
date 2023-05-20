@@ -1,28 +1,12 @@
 const asyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken')
 
-const JOIUserSchema = require('../validation/JOIUserSchema')
+const JOIUserSchema = require('../validation/userSchema')
 
 const User = require("../../db/models/User");
 const RefreshToken = require('../../db/models/RefreshToken');
 
 module.exports.login = asyncHandler(async (req, res) => {
-    if (typeof req.body.username === "undefined" || typeof req.body.password === "undefined") {
-        return res.status(400).json({
-            success: false,
-            errorId: "FIELDS_NOT_PROVIDED",
-            error: "Fields Not Provided"
-        })
-    } else {
-        if (typeof JOIUserSchema.validate({ username: req.body.username, password: req.body.password }).error !== "undefined") {
-            return res.json({
-                success: false,
-                errorId: "INVALID_REQUEST",
-                error: "The request is not valid!",
-                validation: JOIUserSchema.validate({ username: req.body.username, password: req.body.password })
-            });
-        }
-
         let userData = {
             username: req.body.username,
             password: req.body.password,
@@ -59,24 +43,9 @@ module.exports.login = asyncHandler(async (req, res) => {
             });
         }
     }
-})
+)
 
 module.exports.register = asyncHandler(async (req, res) => {
-    if (typeof req.body.username === "undefined" || typeof req.body.password === "undefined") {
-        return res.status(400).json({
-            success: false,
-            errorId: "FIELDS_NOT_PROVIDED",
-            error: "Fields Not Provided"
-        })
-    } else {
-        if (typeof JOIUserSchema.validate({ username: req.body.username, password: req.body.password }).error !== "undefined") {
-            return res.json({
-                success: false,
-                errorId: "INVALID_REQUEST",
-                error: "The request is not valid!",
-                validation: JOIUserSchema.validate({ username: req.body.username, password: req.body.password })
-            });
-        }
 
         let userData = {
             username: req.body.username,
@@ -123,7 +92,7 @@ module.exports.register = asyncHandler(async (req, res) => {
             })
         }
     }
-})
+)
 
 module.exports.refreshToken = asyncHandler(async (req, res) => {
     if (typeof req.body.refreshToken === "undefined" || typeof req.body.username === "undefined") {

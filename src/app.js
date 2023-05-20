@@ -1,5 +1,6 @@
 const express = require("express");
 const routes = require("./routes");
+const handlebars = require('express-handlebars');
 const { accessibleRecordsPlugin, accessibleFieldsPlugin } = require('@casl/mongoose');
 require("dotenv").config();
 
@@ -15,6 +16,7 @@ const { mongoose } = require("mongoose");
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+app.set('view engine', 'handlebars');
 app.use("", routes)
 
 app.listen(PORT, async () => {
