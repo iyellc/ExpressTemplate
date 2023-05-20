@@ -20,7 +20,7 @@ module.exports.login = asyncHandler(async (req, res) => {
             user.client_id = user._id;
             user.password = undefined;
 
-            let token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, { expiresIn: "360000" });
+            let token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, { expiresIn: (process.env.TOKEN_EXPIRITY_TIME * 1000).toString() });
             let refreshToken = await RefreshToken.findOne({ belongsTo: user._id });
 
             refreshToken.currentToken = token;
@@ -31,7 +31,7 @@ module.exports.login = asyncHandler(async (req, res) => {
                 data: {
                     REFRESH_TOKEN: refreshToken.refreshToken,
                     ACCESS_TOKEN: token,
-                    EXPIRES_IN: 3600,
+                    EXPIRES_IN: process.env.TOKEN_EXPIRITY_TIME,
                     TYPE: "Bearer"
                 }
             })
@@ -67,7 +67,7 @@ module.exports.register = asyncHandler(async (req, res) => {
             userData.client_id = user._id;
             userData.password = undefined;
 
-            let token = jwt.sign(userData, process.env.SECRET_KEY, { expiresIn: "360000" });
+            let token = jwt.sign(userData, process.env.SECRET_KEY, { expiresIn: (process.env.TOKEN_EXPIRITY_TIME * 1000).toString() });
 
             let refreshToken = await new RefreshToken({
                 refreshToken: req.body.username + req.body.password, // TODO: Add RSG,
@@ -79,7 +79,7 @@ module.exports.register = asyncHandler(async (req, res) => {
                 data: {
                     REFRESH_TOKEN: refreshToken.refreshToken,
                     ACCESS_TOKEN: token,
-                    EXPIRES_IN: 3600,
+                    EXPIRES_IN: process.env.TOKEN_EXPIRITY_TIME,
                     TYPE: "Bearer"
                 }
             })
@@ -109,7 +109,7 @@ module.exports.refreshToken = asyncHandler(async (req, res) => {
             if (typeof userRecord !== "undefined") {
                 // Successful!
                 userRecord.password = undefined;
-                let token = jwt.sign(userRecord.toJSON(), process.env.SECRET_KEY, { expiresIn: "360000" });
+                let token = jwt.sign(userRecord.toJSON(), process.env.SECRET_KEY, { expiresIn: (process.env.TOKEN_EXPIRITY_TIME * 1000).toString() });
 
                 refreshTokenRecord.currentToken = token;
                 await refreshTokenRecord.save();
@@ -119,7 +119,7 @@ module.exports.refreshToken = asyncHandler(async (req, res) => {
                     data: {
                         REFRESH_TOKEN: refreshTokenRecord.refreshToken,
                         ACCESS_TOKEN: token,
-                        EXPIRES_IN: 3600,
+                        EXPIRES_IN: process.env.TOKEN_EXPIRITY_TIME,
                         TYPE: "Bearer"
                     }
                 })
