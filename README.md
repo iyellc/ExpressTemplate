@@ -28,6 +28,7 @@ The documentation of the current base project.
 - INVALID_CREDENTIALS: Wrong username and password!
 - RECORD_ALREADY_EXISTS: There is another record with same unique keys
 - RECORD_NOT_FOUND: Cannot find the database record
+- PAGE_NOT_FOUND: Cannot find the referring page
 
 #### Creating a controller
 You can easily create a controller by first creating a file on the folder, `src/controller`. For example, we will call our controller `CountryController.js`. Now, to configure routes you can just create a new module export:
